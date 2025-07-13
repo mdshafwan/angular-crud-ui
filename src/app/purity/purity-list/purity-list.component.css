@@ -1,0 +1,16 @@
+/* Purity list specific styles */
+.purity-table {
+  @apply min-w-full divide-y divide-gray-200;
+}
+
+.purity-table th {
+  @apply px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider;
+}
+
+.purity-table td {
+  @apply px-6 py-4 whitespace-nowrap;
+}
+
+.purity-value {
+  @apply font-medium text-blue-600;
+}

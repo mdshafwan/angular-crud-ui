@@ -1,0 +1,12 @@
+/* Purity form specific styles */
+.purity-form input {
+  @apply shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight;
+}
+
+.purity-form input:focus {
+  @apply outline-none ring-2 ring-blue-500 border-blue-500;
+}
+
+.value-input {
+  @apply w-24;
+}

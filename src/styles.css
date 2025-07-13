@@ -1,0 +1,75 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --primary-500: #0ea5e9;
+    --primary-600: #0284c7;
+  }
+  
+  html {
+    @apply h-full bg-gradient-to-br from-sky-50 to-indigo-50;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+  
+  body {
+    @apply min-h-screen text-slate-800 antialiased;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+@layer components {
+  .glass-panel {
+    @apply bg-white/80 backdrop-blur-xs border border-white/70 rounded-2xl shadow-glass;
+  }
+  
+  .floating-card {
+    @apply bg-surface-card rounded-2xl shadow-floating overflow-hidden transition-all duration-300 hover:shadow-xl;
+  }
+  
+  .btn-primary {
+    @apply px-6 py-3 bg-gradient-to-r from-primary-500 to-primary-600 text-white font-medium rounded-xl shadow-md 
+           hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 ease-out 
+           focus:ring-2 focus:ring-primary-500 focus:ring-opacity-50 focus:outline-none;
+  }
+  
+  .smooth-transition {
+    @apply transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)];
+  }
+}
+
+@layer utilities {
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+  
+  .animate-fade-in {
+    animation: fadeIn 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+  }
+  
+  .will-change-transform {
+    will-change: transform;
+  }
+  
+  .preserve-3d {
+    transform-style: preserve-3d;
+  }
+  
+  .backface-hidden {
+    backface-visibility: hidden;
+  }
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Performance optimizations */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}

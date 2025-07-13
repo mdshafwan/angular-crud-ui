@@ -1,0 +1,89 @@
+<div class="max-w-6xl mx-auto py-8 px-4">
+  <div class="flex justify-between items-center mb-10">
+    <h1 class="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary-600 to-blue-800">
+      Metal Management
+    </h1>
+    <button 
+      (click)="showForm()"
+      class="btn-primary will-change-transform preserve-3d"
+    >
+      <span class="flex items-center">
+        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+        </svg>
+        Add New Metal
+      </span>
+    </button>
+  </div>
+
+  <div 
+    class="floating-card glass-panel overflow-hidden smooth-transition"
+    [class.max-h-96]="!showFormFlag"
+    [class.max-h-[800px]]="showFormFlag"
+  >
+    <div class="overflow-x-auto">
+      <table class="min-w-full divide-y divide-gray-200/50">
+        <thead class="bg-surface-elevated">
+          <tr>
+            <th class="px-6 py-4 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Name</th>
+            <th class="px-6 py-4 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Symbol</th>
+            <th class="px-6 py-4 text-right text-xs font-medium text-slate-500 uppercase tracking-wider">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-200/30 bg-surface-card">
+          <tr 
+            *ngFor="let metal of metals" 
+            @listStagger
+            class="hover:bg-slate-50/50 transition-colors duration-150"
+          >
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-sm font-medium text-slate-900">{{ metal.name }}</div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <span class="px-2.5 py-1 rounded-full text-xs font-medium bg-primary-100 text-primary-800">
+              {{ metal.symbol }}
+            </span>
+            </td>
+            
+            <td class="px-6 py-4 whitespace-nowrap text-right text-sm">
+              <div class="flex justify-end space-x-2">
+                <button 
+                  (click)="editMetal(metal)"
+                  class="text-primary-600 hover:text-primary-800 transition-colors"
+                >
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                  </svg>
+                </button>
+                <button 
+                  (click)="deleteMetal(metal.id)"
+                  class="text-rose-600 hover:text-rose-800 transition-colors"
+                >
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                  </svg>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div 
+      *ngIf="showFormFlag" 
+      @fadeInOut
+      class="border-t border-slate-200/50 px-6 py-6 bg-surface-elevated"
+    >
+      <app-metal-form 
+        [metal]="selectedMetal"
+        (formSubmit)="handleFormSubmit($event)"
+        (cancel)="hideForm()"
+      ></app-metal-form>
+    </div>
+  </div>
+
+  <!-- Floating decoration elements -->
+  <div class="fixed top-20 -right-10 w-72 h-72 rounded-full bg-primary-300/10 blur-3xl -z-10"></div>
+  <div class="fixed bottom-10 left-10 w-64 h-64 rounded-full bg-indigo-300/10 blur-3xl -z-10"></div>
+</div>

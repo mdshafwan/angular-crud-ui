@@ -1,0 +1,14 @@
+/* Metal rate form specific styles */
+.metal-rate-form input, 
+.metal-rate-form select {
+  @apply shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight;
+}
+
+.metal-rate-form input:focus, 
+.metal-rate-form select:focus {
+  @apply outline-none ring-2 ring-blue-500 border-blue-500;
+}
+
+.date-picker {
+  @apply cursor-pointer;
+}
