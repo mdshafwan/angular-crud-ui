@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "metal-purity-ui": {
+    "angular-crud-ui": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/metal-purity-ui",
+            "outputPath": "dist/angular-crud-ui",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -68,10 +68,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "metal-purity-ui:build:production"
+              "browserTarget": "angular-crud-ui:build:production"
             },
             "development": {
-              "browserTarget": "metal-purity-ui:build:development"
+              "browserTarget": "angular-crud-ui:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -79,7 +79,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "metal-purity-ui:build"
+            "browserTarget": "angular-crud-ui:build"
           }
         },
         "test": {
@@ -102,7 +102,7 @@
       }
     }
   },
-  "defaultProject": "metal-purity-ui",
+  "defaultProject": "angular-crud-ui",
   "cli": {
     "analytics": false
   }
