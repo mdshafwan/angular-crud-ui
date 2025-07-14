@@ -15,7 +15,7 @@ export interface Purity {
 })
 export class PurityService {
    private endpoint = 'purity';
-  private apiUrl = `${environment.apiBaseUrl}/purity`;
+  // private apiUrl = `${environment.apiBaseUrl}/purity`;
 
   constructor(private api: ApiService) { }
 
