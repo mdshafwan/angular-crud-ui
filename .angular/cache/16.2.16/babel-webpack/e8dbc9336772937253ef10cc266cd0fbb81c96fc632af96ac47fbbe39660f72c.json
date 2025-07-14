@@ -1,0 +1,1 @@
+{"ast":null,"code":"export const environment = {\n  production: true,\n  //   apiBaseUrl: 'http://localhost:8080/api'\n  apiBaseUrl: 'https://your-backend-name.onrender.com/api'\n};","map":null,"metadata":{},"sourceType":"module","externalDependencies":[]}
