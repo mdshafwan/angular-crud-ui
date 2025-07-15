@@ -9,17 +9,17 @@ import { PurityService, Purity } from '../../purity/purity.service';
   styleUrls: ['./metal-rate-form.component.css']
 })
 export class MetalRateFormComponent implements OnInit {
-  @Input() rate: MetalRate = { 
-    id: '', 
-    metalId: '', 
-    purityId: '', 
-    rate: 0, 
-    effectiveDate: new Date().toISOString().split('T')[0] 
+  @Input() metalRate: MetalRate = {
+    id: '',
+    metalId: '',
+    purityId: '',
+    rate: 0,
+    effectiveDate: new Date().toISOString().split('T')[0]
   };
   
   @Output() formSubmit = new EventEmitter<MetalRate>();
   @Output() cancel = new EventEmitter<void>();
-  
+
   metals: Metal[] = [];
   purities: Purity[] = [];
   loadingMetals = true;
@@ -64,7 +64,7 @@ export class MetalRateFormComponent implements OnInit {
   }
 
   onSubmit(): void {
-    this.formSubmit.emit(this.rate);
+    this.formSubmit.emit(this.metalRate);
   }
 
   onCancel(): void {

@@ -6,15 +6,13 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
-
 import { MetalModule } from './metal/metal.module';
 import { PurityModule } from './purity/purity.module';
 import { MetalRateModule } from './metal-rate/metal-rate.module';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    
+    AppComponent
   ],
   imports: [
     BrowserModule,
@@ -22,9 +20,9 @@ import { MetalRateModule } from './metal-rate/metal-rate.module';
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-    MetalModule,        
-    PurityModule,       
-    MetalRateModule     
+    MetalModule,
+    PurityModule,
+    MetalRateModule
   ],
   providers: [],
   bootstrap: [AppComponent]

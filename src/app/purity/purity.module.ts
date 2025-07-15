@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { NgxPaginationModule } from 'ngx-pagination';
+
 import { PurityListComponent } from './purity-list/purity-list.component';
 import { PurityFormComponent } from './purity-form/purity-form.component';
 
@@ -11,10 +13,12 @@ import { PurityFormComponent } from './purity-form/purity-form.component';
   ],
   imports: [
     CommonModule,
-    FormsModule
+    FormsModule,
+    NgxPaginationModule
   ],
   exports: [
-    PurityListComponent
+    PurityListComponent,
+    PurityFormComponent
   ]
 })
-export class PurityModule { }
+export class PurityModule {}

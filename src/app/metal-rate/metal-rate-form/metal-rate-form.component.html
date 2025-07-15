@@ -1,6 +1,6 @@
 <div class="animate-fade-in">
   <h3 class="text-xl font-semibold mb-6 text-slate-800">
-    {{ rate.id ? 'Edit Metal Rate' : 'Create New Metal Rate' }}
+    {{ metalRate.id ? 'Edit Metal Rate' : 'Create New Metal Rate' }}
   </h3>
   
   <form #rateForm="ngForm" (ngSubmit)="onSubmit()" class="space-y-5">
@@ -9,9 +9,9 @@
         <label class="block text-sm font-medium text-slate-700 mb-2">Metal</label>
         <select 
           name="metalId" 
-          [(ngModel)]="rate.metalId"
+          [(ngModel)]="metalRate.metalId"
           required
-          class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 transition-colors appearance-none bg-[url('data:image/svg+xml;base64,PHN2ZyBmaWxsPSdub25lJyBoZWlnaHQ9JzI0JyB2aWV3Qm94PScwIDAgMjQgMjQnIHdpZHRoPScyNCcgeG1sbnM9J2h0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnJz48cGF0aCBkPSdNNyAxMGw1IDUgNS01eicgc3Ryb2tlPScjNjg3MjgwJyBzdHJva2Utd2lkdGg9JzEuNScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJyBzdHJva2UtbGluZWpvaW49J3JvdW5kJy8+PC9zdmc+')] bg-no-repeat bg-[right_1rem_center] bg-[length:1.5em_1.5em]"
+          class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 transition-colors appearance-none bg-[url('data:image/svg+xml;base64,...')] bg-no-repeat bg-[right_1rem_center] bg-[length:1.5em_1.5em]"
         >
           <option *ngFor="let metal of metals" [value]="metal.id">
             {{ metal.name }} ({{ metal.symbol }})
@@ -23,9 +23,9 @@
         <label class="block text-sm font-medium text-slate-700 mb-2">Purity</label>
         <select 
           name="purityId" 
-          [(ngModel)]="rate.purityId"
+          [(ngModel)]="metalRate.purityId"
           required
-          class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 transition-colors appearance-none bg-[url('data:image/svg+xml;base64,PHN2ZyBmaWxsPSdub25lJyBoZWlnaHQ9JzI0JyB2aWV3Qm94PScwIDAgMjQgMjQnIHdpZHRoPScyNCcgeG1sbnM9J2h0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnJz48cGF0aCBkPSdNNyAxMGw1IDUgNS01eicgc3Ryb2tlPScjNjg3MjgwJyBzdHJva2Utd2lkdGg9JzEuNScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJyBzdHJva2UtbGluZWpvaW49J3JvdW5kJy8+PC9zdmc+')] bg-no-repeat bg-[right_1rem_center] bg-[length:1.5em_1.5em]"
+          class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 transition-colors appearance-none bg-[url('data:image/svg+xml;base64,...')] bg-no-repeat bg-[right_1rem_center] bg-[length:1.5em_1.5em]"
         >
           <option *ngFor="let purity of purities" [value]="purity.id">
             {{ purity.name }} ({{ purity.value }}%)
@@ -42,7 +42,7 @@
           <input 
             type="number" 
             name="rate" 
-            [(ngModel)]="rate.rate"
+            [(ngModel)]="metalRate.rate"
             min="0"
             step="0.01"
             required
@@ -57,7 +57,7 @@
         <input 
           type="date" 
           name="effectiveDate" 
-          [(ngModel)]="rate.effectiveDate"
+          [(ngModel)]="metalRate.effectiveDate"
           required
           class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 transition-colors"
         >
@@ -70,7 +70,7 @@
         [disabled]="rateForm.invalid"
         class="btn-primary flex-1 disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        {{ rate.id ? 'Update Rate' : 'Create Rate' }}
+        {{ metalRate.id ? 'Update Rate' : 'Create Rate' }}
       </button>
       <button 
         type="button" 

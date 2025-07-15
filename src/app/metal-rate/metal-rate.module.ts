@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { NgxPaginationModule } from 'ngx-pagination';
+
 import { MetalRateComponent } from './metal-rate-list/metal-rate-list.component';
 import { MetalRateFormComponent } from './metal-rate-form/metal-rate-form.component';
 
@@ -11,10 +13,12 @@ import { MetalRateFormComponent } from './metal-rate-form/metal-rate-form.compon
   ],
   imports: [
     CommonModule,
-    FormsModule
+    FormsModule,
+    NgxPaginationModule
   ],
   exports: [
-    MetalRateComponent
+    MetalRateComponent,
+    MetalRateFormComponent
   ]
 })
 export class MetalRateModule {}
