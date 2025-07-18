@@ -9,6 +9,10 @@ import { AppComponent } from './app.component';
 import { MetalModule } from './metal/metal.module';
 import { PurityModule } from './purity/purity.module';
 import { MetalRateModule } from './metal-rate/metal-rate.module';
+import { UserModule } from './user/user.module';
+
+
+
 
 @NgModule({
   declarations: [
@@ -22,7 +26,8 @@ import { MetalRateModule } from './metal-rate/metal-rate.module';
     FormsModule,
     MetalModule,
     PurityModule,
-    MetalRateModule
+    MetalRateModule,
+    UserModule
   ],
   providers: [],
   bootstrap: [AppComponent]

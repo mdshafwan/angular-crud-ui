@@ -18,11 +18,12 @@ export class ApiService {
     });
   }
 
-  get<T>(endpoint: string): Observable<T> {
-    return this.http.get<T>(`${this.apiUrl}/${endpoint}`, {
-      headers: this.getHeaders()
-    });
-  }
+  get<T>(endpoint: string, params?: any): Observable<T> {
+  return this.http.get<T>(`${this.apiUrl}/${endpoint}`, {
+    headers: this.getHeaders(),
+    params
+  });
+}
 
   post<T>(endpoint: string, body: any): Observable<T> {
     return this.http.post<T>(`${this.apiUrl}/${endpoint}`, body, {
