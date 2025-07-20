@@ -14,7 +14,18 @@
       </span>
     </button>
   </div>
+   <!-- 🔢 Range Filters -->
+<div class="mb-6 grid grid-cols-2 sm:grid-cols-4 gap-4">
 
+  <div>
+    <label class="block text-xs font-medium text-gray-600">From Date</label>
+    <input type="date" [(ngModel)]="fromDate" (change)="applyFilters()" class="w-full px-3 py-2 border rounded" />
+  </div>
+  <div>
+    <label class="block text-xs font-medium text-gray-600">To Date</label>
+    <input type="date" [(ngModel)]="toDate" (change)="applyFilters()" class="w-full px-3 py-2 border rounded" />
+  </div>
+</div>
   <!-- 🔍 Filter Input -->
   <input
     type="text"
@@ -36,19 +47,18 @@
       <table class="min-w-full divide-y divide-gray-200/50">
         <thead class="bg-surface-elevated">
           <tr>
-            <th class="px-6 py-4 text-left text-xs font-medium text-slate-500 uppercase tracking-wider cursor-pointer"
+        <th class="px-6 py-4 text-left text-xs font-medium text-slate-500 uppercase tracking-wider cursor-pointer"
                 (click)="toggleSort('name')">
               Name
-              <span *ngIf="sortField === 'name'">
-                {{ sortDirection === 'asc' ? '▲' : '▼' }}
-              </span>
+              <span *ngIf="getSortDirection('name') === 'asc'">▲</span>
+              <span *ngIf="getSortDirection('name') === 'desc'">▼</span>
             </th>
+
             <th class="px-6 py-4 text-left text-xs font-medium text-slate-500 uppercase tracking-wider cursor-pointer"
                 (click)="toggleSort('email')">
               Email
-              <span *ngIf="sortField === 'email'">
-                {{ sortDirection === 'asc' ? '▲' : '▼' }}
-              </span>
+              <span *ngIf="getSortDirection('email') === 'asc'">▲</span>
+              <span *ngIf="getSortDirection('email') === 'desc'">▼</span>
             </th>
             <th class="px-6 py-4 text-right text-xs font-medium text-slate-500 uppercase tracking-wider">
               Actions
@@ -116,3 +126,4 @@
   <div class="fixed top-20 -right-10 w-72 h-72 rounded-full bg-primary-300/10 blur-3xl -z-10"></div>
   <div class="fixed bottom-10 left-10 w-64 h-64 rounded-full bg-indigo-300/10 blur-3xl -z-10"></div>
 </div>
+ 

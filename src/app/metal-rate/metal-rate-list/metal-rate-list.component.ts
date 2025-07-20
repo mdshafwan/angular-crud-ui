@@ -43,7 +43,7 @@ export class MetalRateComponent implements OnInit {
   metalMap: Map<string, Metal> = new Map();
   purityMap: Map<string, Purity> = new Map();
 
-  showFormFlag: boolean = false;
+  showFormFlag = false;
   selectedMetalRate: MetalRate = {
     metalId: '',
     purityId: '',
@@ -51,16 +51,15 @@ export class MetalRateComponent implements OnInit {
     effectiveDate: ''
   };
 
-  // 🔄 Pagination
-  page: number = 1;
-  itemsPerPage: number = 5;
+  page = 1;
+  itemsPerPage = 5;
 
-  // 🔤 Sorting
   sortField: keyof MetalRate = 'effectiveDate';
   sortDirection: 'asc' | 'desc' = 'asc';
 
-  // 🔍 Filtering
-  filterText: string = '';
+  filterText = '';
+  fromDate?: string;
+  toDate?: string;
 
   constructor(
     private metalRateService: MetalRateService,
@@ -79,7 +78,7 @@ export class MetalRateComponent implements OnInit {
         this.purityService.getAllpurity().subscribe({
           next: purities => {
             purities.forEach(p => p.id && this.purityMap.set(p.id, p));
-            this.loadRates();
+            this.loadRates(); // initial load
           },
           error: err => console.error('Failed to load purities:', err)
         });
@@ -89,13 +88,19 @@ export class MetalRateComponent implements OnInit {
   }
 
   private loadRates(): void {
-    this.metalRateService.getAllMetalRates().subscribe({
-      next: rates => {
-        this.metalRates = rates;
-        this.sortRates();
-      },
-      error: err => console.error('Failed to load metal rates:', err)
-    });
+  this.metalRateService.getFilteredMetalRates(this.fromDate, this.toDate).subscribe({
+    next: rates => {
+      const safeRates = Array.isArray(rates) ? rates : [];
+      console.log('Filtered rates:', safeRates);
+      this.metalRates = [...safeRates];
+      this.page = 1;
+      this.sortRates();
+    },
+    error: err => console.error('Failed to load filtered metal rates:', err)
+  });
+}
+  applyFilters(): void {
+    this.loadRates();
   }
 
   showForm(): void {
@@ -119,7 +124,7 @@ export class MetalRateComponent implements OnInit {
 
   deleteMetalRate(id: string): void {
     this.metalRateService.deleteMetalRate(id).subscribe(() => {
-      this.metalRates = this.metalRates.filter(r => r.id !== id);
+      this.loadRates();
     });
   }
 
@@ -128,14 +133,8 @@ export class MetalRateComponent implements OnInit {
       ? this.metalRateService.updateMetalRate(rate.id, rate)
       : this.metalRateService.createMetalRate(rate);
 
-    request.subscribe(result => {
-      if (rate.id) {
-        const index = this.metalRates.findIndex(r => r.id === result.id);
-        if (index !== -1) this.metalRates[index] = result;
-      } else {
-        this.metalRates.push(result);
-      }
-      this.sortRates();
+    request.subscribe(() => {
+      this.loadRates();
       this.hideForm();
     });
   }
@@ -149,10 +148,9 @@ export class MetalRateComponent implements OnInit {
   }
 
   getPurityValue(id: string): string {
-    return this.purityMap.get(id)?.value.toFixed(2) || '–';
+    return this.purityMap.get(id)?.value?.toFixed(2) || '–';
   }
 
-  // ✅ Sorting
   toggleSort(field: keyof MetalRate): void {
     if (this.sortField === field) {
       this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
@@ -164,6 +162,8 @@ export class MetalRateComponent implements OnInit {
   }
 
   sortRates(): void {
+    if (!this.metalRates || this.metalRates.length < 2) return;
+
     this.metalRates.sort((a, b) => {
       const valA = a[this.sortField];
       const valB = b[this.sortField];
@@ -177,20 +177,21 @@ export class MetalRateComponent implements OnInit {
     });
   }
 
-  // ✅ Filtering
-  get filteredRates(): MetalRate[] {
-    return this.metalRates.filter(rate => {
-      const metal = this.getMetalName(rate.metalId).toLowerCase();
-      const purity = this.getPurityValue(rate.purityId).toLowerCase();
-      const date = rate.effectiveDate.toLowerCase();
+      get filteredRates(): MetalRate[] {
+      if (!this.metalMap.size || !this.purityMap.size) return [];
 
-      return metal.includes(this.filterText.toLowerCase()) ||
-             purity.includes(this.filterText.toLowerCase()) ||
-             date.includes(this.filterText.toLowerCase());
-    });
-  }
+      const search = this.filterText?.toLowerCase().trim();
+      if (!search) return [...(this.metalRates ?? [])];
 
-  // ✅ Pagination handler
+      return (this.metalRates ?? []).filter(rate => {
+        const metal = this.getMetalName(rate.metalId)?.toLowerCase() ?? '';
+        const purity = this.getPurityValue(rate.purityId)?.toLowerCase() ?? '';
+        const date = rate.effectiveDate?.toLowerCase() ?? '';
+
+        return metal.includes(search) || purity.includes(search) || date.includes(search);
+      });
+    }
+
   onPageChange(pageNum: number): void {
     this.page = pageNum;
   }

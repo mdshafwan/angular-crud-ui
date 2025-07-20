@@ -6,6 +6,8 @@ export interface User {
   id?: string;
   name: string;
   email: string;
+  role?: string;
+  createdAt?: string;    // 📆 For date-based filtering
 }
 
 @Injectable({ providedIn: 'root' })
@@ -29,4 +31,10 @@ export class UserService {
   deleteUser(id: string): Observable<void> {
     return this.api.delete<void>(this.endpoint, id);
   }
+  getFilteredUsers(fromDate?: string, toDate?: string): Observable<User[]> {
+  let query: any = {};
+  if (fromDate) query.from = fromDate;
+  if (toDate) query.to = toDate;
+  return this.api.get<User[]>(`${this.endpoint}/filter`, query);
+}
 }

@@ -14,11 +14,18 @@ export class UserListComponent implements OnInit {
   showFormFlag = false;
   loading = true;
 
-  page: number = 1;
-  itemsPerPage: number = 5;
-  filterText: string = '';
-  sortField: keyof User = 'name';
-  sortDirection: 'asc' | 'desc' = 'asc';
+  page = 1;
+  itemsPerPage = 5;
+  filterText = '';
+
+  // ✅ Multi-column sort stack
+  sortStack: { field: keyof User; direction: 'asc' | 'desc' }[] = [];
+
+  // ✅ Range filter inputs
+  minPurity?: number;
+  maxPurity?: number;
+  fromDate?: string;
+  toDate?: string;
 
   constructor(private userService: UserService) {}
 
@@ -38,35 +45,60 @@ export class UserListComponent implements OnInit {
         this.sortUsers();
         this.loading = false;
       },
-      error: () => this.loading = false
+      error: () => (this.loading = false)
     });
-  }
-
-  sortUsers(): void {
-    this.users.sort((a, b) => {
-      const fieldA = a[this.sortField]?.toLowerCase() || '';
-      const fieldB = b[this.sortField]?.toLowerCase() || '';
-      return this.sortDirection === 'asc'
-        ? fieldA.localeCompare(fieldB)
-        : fieldB.localeCompare(fieldA);
-    });
-  }
-
-  get filteredUsers(): User[] {
-    return this.users.filter(u =>
-      u.name.toLowerCase().includes(this.filterText.toLowerCase()) ||
-      u.email.toLowerCase().includes(this.filterText.toLowerCase())
-    );
   }
 
   toggleSort(field: keyof User): void {
-    if (this.sortField === field) {
-      this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+    const existing = this.sortStack.find(s => s.field === field);
+    if (existing) {
+      existing.direction = existing.direction === 'asc' ? 'desc' : 'asc';
     } else {
-      this.sortField = field;
-      this.sortDirection = 'asc';
+      this.sortStack.push({ field, direction: 'asc' });
     }
     this.sortUsers();
+  }
+
+  getSortIcon(field: keyof User): string {
+    const sort = this.sortStack.find(s => s.field === field);
+    return sort ? (sort.direction === 'asc' ? '↑' : '↓') : '';
+  }
+
+  getSortDirection(field: keyof User): 'asc' | 'desc' | undefined {
+    return this.sortStack.find(s => s.field === field)?.direction;
+  }
+
+  sortUsers(): void {
+    const stack = [...this.sortStack];
+    this.users.sort((a, b) => {
+      for (const s of stack) {
+        const valA = (a[s.field] ?? '').toString().toLowerCase();
+        const valB = (b[s.field] ?? '').toString().toLowerCase();
+        const cmp = valA.localeCompare(valB);
+        if (cmp !== 0) return s.direction === 'asc' ? cmp : -cmp;
+      }
+      return 0;
+    });
+  }
+
+  applyFilters(): void {
+    // Empty hook — filtering is driven by `filteredUsers` getter
+  }
+
+  get filteredUsers(): User[] {
+    return this.users
+      .filter(u =>
+        (u.name ?? '').toLowerCase().includes(this.filterText.toLowerCase()) ||
+        (u.email ?? '').toLowerCase().includes(this.filterText.toLowerCase())
+      )
+      .filter(u => {
+        const createdAt = u.createdAt ? new Date(u.createdAt).getTime() : 0;
+        const from = this.fromDate ? new Date(this.fromDate).getTime() : -Infinity;
+        const to = this.toDate ? new Date(this.toDate).getTime() : Infinity;
+        const matchesDate = createdAt >= from && createdAt <= to;
+
+        return  matchesDate;
+      });
   }
 
   showForm(): void {

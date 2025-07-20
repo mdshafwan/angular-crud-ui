@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+import { MetalListComponent } from './metal/metal-list/metal-list.component';
 import { PurityListComponent } from './purity/purity-list/purity-list.component';
 import { MetalRateComponent } from './metal-rate/metal-rate-list/metal-rate-list.component';
-import { MetalListComponent } from './metal/metal-list/metal-list.component';
-import { UserListComponent } from './user/user-list/user-list.component'; // ✅ New import
+import { UserListComponent } from './user/user-list/user-list.component'; 
 
 
 

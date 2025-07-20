@@ -13,7 +13,18 @@
       </span>
     </button>
   </div>
+     <!-- 🔢 Range Filters -->
+<div class="mb-6 grid grid-cols-2 sm:grid-cols-4 gap-4">
 
+  <div>
+    <label class="block text-xs font-medium text-gray-600">From Date</label>
+    <input type="date" [(ngModel)]="fromDate" (change)="applyFilters()" class="w-full px-3 py-2 border rounded" />
+  </div>
+  <div>
+    <label class="block text-xs font-medium text-gray-600">To Date</label>
+    <input type="date" [(ngModel)]="toDate" (change)="applyFilters()" class="w-full px-3 py-2 border rounded" />
+  </div>
+</div>
   <!-- 🔍 Filter Input -->
   <input
     type="text"

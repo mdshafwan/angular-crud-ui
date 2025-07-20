@@ -13,16 +13,15 @@ export class PurityListComponent implements OnInit {
   showFormFlag = false;
   selectedPurity: Purity = { name: '', value: 0 };
 
-  // 🔄 Pagination
   page: number = 1;
   itemsPerPage: number = 5;
 
-  // 🔤 Sorting
   sortField: keyof Purity = 'name';
   sortDirection: 'asc' | 'desc' = 'asc';
 
-  // 🔍 Filtering
   filterText: string = '';
+  fromDate?: string;
+  toDate?: string;
 
   constructor(private purityService: PurityService) {}
 
@@ -31,10 +30,14 @@ export class PurityListComponent implements OnInit {
   }
 
   loadPurities(): void {
-    this.purityService.getAllpurity().subscribe(purities => {
-      this.purities = purities;
+    this.purityService.getFilteredPurities(this.fromDate, this.toDate).subscribe((purities: Purity[] = []) => {
+      this.purities = purities || [];
       this.sortPurity();
     });
+  }
+
+  applyFilters(): void {
+    this.loadPurities();
   }
 
   showForm(): void {
@@ -68,7 +71,6 @@ export class PurityListComponent implements OnInit {
     this.showFormFlag = false;
   }
 
-  // ✅ Sorting
   toggleSort(field: keyof Purity): void {
     if (this.sortField === field) {
       this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
@@ -80,6 +82,8 @@ export class PurityListComponent implements OnInit {
   }
 
   sortPurity(): void {
+    if (!this.purities || this.purities.length < 2) return;
+
     this.purities.sort((a, b) => {
       const valA = a[this.sortField];
       const valB = b[this.sortField];
@@ -93,14 +97,12 @@ export class PurityListComponent implements OnInit {
     });
   }
 
-  // ✅ Filtering
   get filteredPurities(): Purity[] {
-    return this.purities.filter(p =>
+    return (this.purities ?? []).filter(p =>
       p.name.toLowerCase().includes(this.filterText.toLowerCase())
     );
   }
 
-  // ✅ Page Change Handler
   onPageChange(pageNum: number): void {
     this.page = pageNum;
   }
