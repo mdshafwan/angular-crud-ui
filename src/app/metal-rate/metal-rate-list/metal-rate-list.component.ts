@@ -75,7 +75,8 @@ export class MetalRateComponent implements OnInit {
     this.metalService.getAllMetals().subscribe({
       next: metals => {
         metals.forEach(m => m.id && this.metalMap.set(m.id, m));
-        this.purityService.getAllpurity().subscribe({
+        this.purityService.getAllPurities().subscribe({
+
           next: purities => {
             purities.forEach(p => p.id && this.purityMap.set(p.id, p));
             this.loadRates(); // initial load
@@ -91,7 +92,6 @@ export class MetalRateComponent implements OnInit {
   this.metalRateService.getFilteredMetalRates(this.fromDate, this.toDate).subscribe({
     next: rates => {
       const safeRates = Array.isArray(rates) ? rates : [];
-      console.log('Filtered rates:', safeRates);
       this.metalRates = [...safeRates];
       this.page = 1;
       this.sortRates();

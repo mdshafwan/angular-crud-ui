@@ -10,6 +10,8 @@ import { MetalModule } from './metal/metal.module';
 import { PurityModule } from './purity/purity.module';
 import { MetalRateModule } from './metal-rate/metal-rate.module';
 import { UserModule } from './user/user.module';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+
 
 
 
@@ -27,7 +29,8 @@ import { UserModule } from './user/user.module';
     MetalModule,
     PurityModule,
     MetalRateModule,
-    UserModule
+    UserModule,
+    MatSnackBarModule
   ],
   providers: [],
   bootstrap: [AppComponent]

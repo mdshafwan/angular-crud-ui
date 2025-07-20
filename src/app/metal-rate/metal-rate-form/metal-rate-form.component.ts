@@ -51,7 +51,7 @@ export class MetalRateFormComponent implements OnInit {
 
   loadPurities(): void {
     this.loadingPurities = true;
-    this.purityService.getAllpurity().subscribe({
+    this.purityService.getAllPurities().subscribe({
       next: (purities: Purity[]) => {
         this.purities = purities;
         this.loadingPurities = false;

@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { MetalService, Metal } from '../../metal/metal.service';
+import { HttpClient } from '@angular/common/http';
+import { ToastService } from '../../shared/toast.service'; // adjust if using MatSnackBar
+import { environment } from '../../../environments/environment';
+
+
 import {
   trigger,
   transition,
@@ -51,7 +56,11 @@ export class MetalListComponent implements OnInit {
   fromDate?: string;
   toDate?: string;
 
-  constructor(private metalService: MetalService) {}
+  constructor(
+    private metalService: MetalService,
+    private http: HttpClient,
+    private toast: ToastService
+  ) {}
 
   ngOnInit(): void {
     this.loadMetals();
@@ -109,6 +118,20 @@ export class MetalListComponent implements OnInit {
       }
       this.sortMetals();
       this.hideForm();
+    });
+  }
+
+  undo(id?: string): void {
+    if (!id) return;
+
+    this.http.post(`${environment.apiBaseUrl}/metals/${id}/undo`, {}).subscribe({
+      next: () => {
+        this.loadMetals();
+        this.toast.show('Undo successful', 'Close');
+      },
+      error: err => {
+        this.toast.show('Undo failed: ' + err.message, 'Close');
+      }
     });
   }
 

@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { PurityService, Purity } from '../purity.service';
+import { HttpClient } from '@angular/common/http';
+import { ToastService } from '../../shared/toast.service'; // adjust if using MatSnackBar
 import { fadeInOut, listStagger } from '../../animations';
+import { environment } from '../../../environments/environment'; // path may vary
 
 @Component({
   selector: 'app-purity-list',
@@ -23,7 +26,11 @@ export class PurityListComponent implements OnInit {
   fromDate?: string;
   toDate?: string;
 
-  constructor(private purityService: PurityService) {}
+  constructor(
+    private purityService: PurityService,
+    private http: HttpClient,
+    private toast: ToastService
+  ) {}
 
   ngOnInit(): void {
     this.loadPurities();
@@ -55,6 +62,22 @@ export class PurityListComponent implements OnInit {
       this.purityService.deletePurity(id).subscribe(() => this.loadPurities());
     }
   }
+
+undo(id: string): void {
+  if (!id) return;
+
+  this.http.post<Purity>(`${environment.apiBaseUrl}/purities/${id}/undo`, {}).subscribe({
+    next: (restored: Purity) => {
+      this.loadPurities();
+      this.toast.show('Undo successful', 'Close');
+    },
+    error: (err: any) => {
+      this.toast.show('Undo failed: ' + err.message, 'Close');
+    }
+  });
+}
+
+
 
   handleFormSubmit(purity: Purity): void {
     const action = purity.id

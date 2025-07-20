@@ -13,11 +13,11 @@ export interface Purity {
   providedIn: 'root'
 })
 export class PurityService {
-  private endpoint = 'purity';
+  private endpoint = 'purities'; // ✅ use plural to match backend controller
 
   constructor(private api: ApiService) {}
 
-  getAllpurity(): Observable<Purity[]> {
+  getAllPurities(): Observable<Purity[]> {
     return this.api.get<Purity[]>(this.endpoint);
   }
 
@@ -38,5 +38,9 @@ export class PurityService {
     if (fromDate) query.from = fromDate;
     if (toDate) query.to = toDate;
     return this.api.get<Purity[]>(`${this.endpoint}/filter`, query);
+  }
+
+  undoPurity(id: string): Observable<Purity> {
+    return this.api.post<Purity>(`${this.endpoint}/${id}/undo`, {});
   }
 }
