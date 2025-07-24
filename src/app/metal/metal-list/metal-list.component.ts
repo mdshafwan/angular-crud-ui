@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MetalService, Metal } from '../../metal/metal.service';
 import { HttpClient } from '@angular/common/http';
-import { ToastService } from '../../shared/toast.service'; // adjust if using MatSnackBar
+import { ToastService } from '../../shared/toast.service';
 import { environment } from '../../../environments/environment';
-
 
 import {
   trigger,
@@ -68,8 +67,8 @@ export class MetalListComponent implements OnInit {
 
   loadMetals(): void {
     this.metalService.getFilteredMetals(this.fromDate, this.toDate).subscribe({
-      next: (metals: Metal[]) => {
-        this.metals = metals;
+      next: (metals: Metal[] = []) => {
+        this.metals = Array.isArray(metals) ? metals : [];
         this.sortMetals();
       },
       error: err => console.error('Failed to load metals:', err)
@@ -78,6 +77,31 @@ export class MetalListComponent implements OnInit {
 
   applyFilters(): void {
     this.loadMetals();
+  }
+
+  exportToCSV(): void {
+    const filters = {
+      searchText: this.filterText,
+      fromDate: this.fromDate,
+      toDate: this.toDate,
+      sortField: this.sortField,
+      sortDirection: this.sortDirection
+      // ✅ activeOnly removed
+    };
+
+    this.http.post(`${environment.apiBaseUrl}/metals/export`, filters, {
+      responseType: 'blob'
+    }).subscribe(blob => {
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'metals.csv';
+      a.click();
+      window.URL.revokeObjectURL(url);
+      this.toast.show('Export successful!', 'Close');
+    }, err => {
+      this.toast.show('Export failed: ' + err.message, 'Close');
+    });
   }
 
   showForm(): void {
@@ -99,9 +123,10 @@ export class MetalListComponent implements OnInit {
   }
 
   deleteMetal(id: string): void {
-    this.metalService.deleteMetal(id).subscribe(() => {
-      this.metals = this.metals.filter(m => m.id !== id);
-    });
+    this.metals = Array.isArray(this.metals)
+      ? this.metals.filter(m => m.id !== id)
+      : [];
+    this.metalService.deleteMetal(id).subscribe();
   }
 
   handleFormSubmit(metal: Metal): void {
@@ -146,9 +171,11 @@ export class MetalListComponent implements OnInit {
   }
 
   sortMetals(): void {
-    this.metals.sort((a, b) => {
-      const valA = a[this.sortField];
-      const valB = b[this.sortField];
+    if (!Array.isArray(this.metals)) return;
+
+    this.metals = [...this.metals].sort((a, b) => {
+      const valA = a[this.sortField] ?? '';
+      const valB = b[this.sortField] ?? '';
       const strA = typeof valA === 'string' ? valA.toLowerCase() : String(valA);
       const strB = typeof valB === 'string' ? valB.toLowerCase() : String(valB);
       return this.sortDirection === 'asc'
@@ -158,12 +185,14 @@ export class MetalListComponent implements OnInit {
   }
 
   get filteredMetals(): Metal[] {
-    return this.metals.filter(metal => {
-      const name = metal.name.toLowerCase();
-      const symbol = metal.symbol.toLowerCase();
-      const query = this.filterText.toLowerCase();
-      return name.includes(query) || symbol.includes(query);
-    });
+    return Array.isArray(this.metals)
+      ? this.metals.filter(metal => {
+          const name = metal.name?.toLowerCase() || '';
+          const symbol = metal.symbol?.toLowerCase() || '';
+          const query = this.filterText.toLowerCase();
+          return name.includes(query) || symbol.includes(query);
+        })
+      : [];
   }
 
   onPageChange(pageNum: number): void {
