@@ -1,0 +1,55 @@
+# 👉 Angular Frontend Ignore Rules
+node_modules/
+dist/
+.angular/
+.env.local
+.env*
+*.log
+*.swp
+*.swo
+.DS_Store
+
+# Angular CLI cache
+.cache/
+.idea/
+.vscode/
+
+# OS & editor specific
+Thumbs.db
+*.iml
+
+# Build artifacts
+*.tgz
+
+# 👉 Java Backend (Spring Boot + Maven)
+target/
+*.class
+*.log
+*.jar
+*.war
+*.iml
+*.swp
+
+# IDE files
+.idea/
+.vscode/
+*.iws
+*.ipr
+
+# Maven / Gradle
+.mvn/
+build/
+.gradle/
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Mongo dump or database files
+dump/
+*.lock
+
+# ✅ Docker and CI/CD (optional)
+docker-compose.override.yml
+*.env
+*.secret
